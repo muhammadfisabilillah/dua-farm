@@ -8,14 +8,43 @@ export default function CartDrawer() {
 
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
+  const handleWhatsAppCheckout = () => {
+    const message = items
+      .map((item) => `- ${item.name} (x${item.quantity}): Rp ${(item.price * item.quantity).toLocaleString('id-ID')}`)
+      .join('\n');
+    
+    const totalText = `Total Belanja: *Rp ${total.toLocaleString('id-ID')}*`;
+    
+    // Template pesan dengan panduan isi data diri untuk pelanggan
+    const text = `Halo DUA FARM, saya ingin melakukan pemesanan.
+Berikut detail pesanan saya:
+${message}
+
+${totalText}
+
+Mohon diproses dengan data berikut:
+*Nama Penerima:* 
+*Alamat Lengkap:* 
+*Nomor WhatsApp:* 
+*Catatan Tambahan:* 
+
+Terima kasih!`;
+    
+    // Ganti nomor di bawah ini dengan nomor WhatsApp admin DUA FARM (format internasional tanpa +)
+    const phoneNumber = "6285866070448"; 
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
+    
+    window.open(url, '_blank');
+  };
+
   return (
     <div className="fixed bottom-6 right-6 bg-white p-6 rounded-2xl shadow-2xl border border-gray-100 w-80 z-50">
       <h3 className="font-bold text-lg mb-4 text-gray-900">Keranjang Belanja</h3>
+      
       {items.length === 0 ? (
         <p className="text-gray-500 text-sm">Keranjang kosong.</p>
       ) : (
-<>
-          {/* Tambahkan class text-gray-900 agar warna lebih gelap/terbaca */}
+        <>
           <ul className="space-y-3 mb-4 text-gray-900">
             {items.map((item) => (
               <li key={item.id} className="flex justify-between items-center text-sm">
@@ -29,10 +58,17 @@ export default function CartDrawer() {
               </li>
             ))}
           </ul>
-          {/* Ubah text-gray-500 menjadi text-gray-900 untuk total */}
-          <div className="border-t pt-4 font-bold text-lg text-gray-900">
+          
+          <div className="border-t pt-4 font-bold text-lg text-gray-900 mb-4">
             Total: Rp {total.toLocaleString('id-ID')}
           </div>
+          
+          <button 
+            onClick={handleWhatsAppCheckout}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all shadow-md"
+          >
+            Pesan via WhatsApp
+          </button>
         </>
       )}
     </div>

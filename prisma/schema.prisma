@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Gender {
+  JANTAN
+  BETINA
+  MIXED
+}
+
+enum OrderStatus {
+  PENDING
+  WAITING_PAYMENT
+  PAID
+  SHIPPED
+  COMPLETED
+  CANCELLED
+}
+
+enum ShippingMethod {
+  PICKUP
+  DELIVERY
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  
+  name        String
+  description String?
+  price       Int
+  stock       Int       @default(0)
+  isReady     Boolean   @default(true)
+  imageUrl    String?
+  
+  breed       String?
+  age         String?
+  weight      String?
+  gender      Gender?
+  
+  orderItems  OrderItem[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Order {
+  id              Int            @id @default(autoincrement())
+  uuid            String         @unique @default(uuid())
+  
+  customerName    String
+  customerPhone   String
+  shippingAddress String?
+  shippingMethod  ShippingMethod @default(PICKUP)
+  
+  totalAmount     Int
+  status          OrderStatus    @default(PENDING)
+  
+  orderItems      OrderItem[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Int
+}

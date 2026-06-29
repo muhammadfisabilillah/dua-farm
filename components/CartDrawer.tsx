@@ -8,7 +8,8 @@ export default function CartDrawer() {
 
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  const handleWhatsAppCheckout = () => {
+  // Ubah fungsi ini menjadi async agar bisa menunggu proses fetch API
+  const handleWhatsAppCheckout = async () => {
     const message = items
       .map((item) => `- ${item.name} (x${item.quantity}): Rp ${(item.price * item.quantity).toLocaleString('id-ID')}`)
       .join('\n');
@@ -29,11 +30,33 @@ Mohon diproses dengan data berikut:
 *Catatan Tambahan:* 
 
 Terima kasih!`;
+
+    // --- BAGIAN TAMBAHAN UNTUK INTEGRASI GOOGLE SHEETS ---
+    const orderData = {
+      // Karena nama detailnya diisi manual oleh user di WA, kita beri penanda default
+      customerName: "Pelanggan Web (Data Detail di WA)", 
+      items: items, 
+      totalAmount: `Rp ${total.toLocaleString('id-ID')}`
+    };
+
+    try {
+      // Menjalankan sinkronisasi ke Google Sheets di balik layar
+      await fetch('/api/sync-sheets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData),
+      });
+      console.log("Pembukuan otomatis berhasil dicatat.");
+    } catch (error) {
+      console.error("Gagal mencatat pembukuan otomatis:", error);
+    }
+    // --------------------------------------------------------
     
     // Ganti nomor di bawah ini dengan nomor WhatsApp admin DUA FARM (format internasional tanpa +)
     const phoneNumber = "6285866070448"; 
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
     
+    // Setelah data dikirim ke Sheets, arahkan user ke WhatsApp
     window.open(url, '_blank');
   };
 

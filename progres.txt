@@ -1,0 +1,35 @@
+Dua-farm Joko-Mulyono
+
+Supabase sandi =Dua-Farm123A
+
+
+Status Proyek: [Progres 65% - Tahap Pengembangan Fungsional]
+1. Komponen yang Sudah Berjalan (Selesai)
+Database & Skema: Struktur database (Produk, Kategori, Order) sudah terpasang di Supabase.
+
+API & Backend: Endpoint API (/api/products) sudah berjalan mulus untuk mengambil data dari database ke frontend.
+
+Tampilan (Frontend): Landing page sudah menggunakan desain responsive dengan Tailwind CSS, menampilkan Hero Section, dan Katalog Produk.
+
+Manajemen State: Implementasi Zustand sudah berhasil menghubungkan katalog ke keranjang belanja secara real-time.
+
+Integrasi Git: Proyek sudah terhubung ke repository GitHub untuk keamanan dan kolaborasi kode.
+
+2. Hal yang Masih Perlu Perbaikan (To-Do List)
+Manajemen Aset Gambar: Perlu pembuatan folder public/images/ dan pemindahan gambar agar tidak bergantung pada placeholder atau URL eksternal yang tidak stabil.
+
+Sistem Checkout: Saat ini keranjang sudah bisa menampung data, tapi perlu dibuatkan fungsi untuk mengirimkan data tersebut ke Supabase (tabel Order) dan melakukan konfirmasi pesanan (misal: kirim ke WhatsApp).
+
+UI Keranjang: Penyesuaian styling tambahan agar keranjang belanja tidak menutupi produk di layar ponsel (karena sekarang posisinya fixed di pojok).
+
+Optimasi Gambar: Memastikan loading gambar produk asli dari klien sudah teroptimasi dengan baik.
+
+Rincian untuk Klien (Daftar Fitur)
+Jika kamu ingin menjelaskan kepada klien apa saja yang sudah mereka miliki sekarang, kamu bisa menggunakan daftar ini:
+
+Katalog Produk Dinamis: Klien dapat menambah/mengurangi produk di database dan website akan terupdate otomatis.
+
+Keranjang Belanja Interaktif: Pengguna bisa memilih produk, menambah jumlah pesanan, dan melihat total harga secara real-time.
+
+Desain Modern & Responsif: Website sudah nyaman dibuka melalui HP maupun Laptop.
+Infrastruktur Modern: Menggunakan teknologi cloud (Supabase) yang menjamin website tetap cepat dan aman.

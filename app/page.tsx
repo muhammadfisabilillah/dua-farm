@@ -1,24 +1,26 @@
 // src/app/page.tsx
 import ProductCard from '../components/ProductCard';
 import CartDrawer from '../components/CartDrawer';
-import { headers } from 'next/headers';
+import { PrismaClient } from '@prisma/client';
 
-// Fungsi ini bertugas memanggil API products yang kamu buat di Langkah 4
+// Ambil produk langsung dari database di Server Component.
+// Tidak memanggil API sendiri lewat fetch karena di Vercel host internal bisa berbeda
+// dan mengembalikan halaman HTML instead of JSON.
 async function getProducts() {
-  // Gunakan URL absolut karena fetch di Server Component (Node.js) tidak mendukung relative URL
-  const headersList = headers();
-  const host = headersList.get('host');
-  const protocol = host?.includes('localhost') ? 'http' : 'https';
-  const baseUrl = `${protocol}://${host}`;
-  const res = await fetch(`${baseUrl}/api/products`, {
-    cache: 'no-store', // Agar data selalu segar (tidak di-cache) setiap kali di-refresh
-  });
+  const prisma = new PrismaClient();
 
-  if (!res.ok) {
-    throw new Error('Gagal mengambil data produk');
+  try {
+    return await prisma.product.findMany({
+      include: { category: true },
+      orderBy: { createdAt: 'desc' },
+    });
+  } catch (error) {
+    console.error('Gagal mengambil data produk:', error);
+    // Halaman tetap tampil walau database belum terkonfigurasi
+    return [];
+  } finally {
+    await prisma.$disconnect();
   }
-
-  return res.json();
 }
 
 // Tautan WhatsApp resmi DUA FARM (format QR, bukan nomor telepon)
@@ -41,9 +43,10 @@ const CARE_STEPS = [
   },
 ];
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
-  const response = await getProducts();
-  const products = response.data ?? [];
+  const products = await getProducts();
 
   return (
     <main className="min-h-screen bg-farm-cream text-farm-ink">

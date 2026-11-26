@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
-
 // Fungsi GET untuk mengambil semua data produk
 export async function GET() {
   try {
+    // Prisma dibuat di dalam handler agar build tidak membutuhkan env var database
+    const prisma = new PrismaClient();
+
     const products = await prisma.product.findMany({
       include: {
         category: true, // Perintah ini akan menarik data nama kategori sekaligus

@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font lokal — tidak bergantung jaringan saat build */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-600.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-700.ttf') format('truetype');
+  font-weight: 700 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/plus-jakarta-sans-400.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/plus-jakarta-sans-600.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/plus-jakarta-sans-700.ttf') format('truetype');
+  font-weight: 700 900;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -22,7 +58,28 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #f9f7f4; /* farm-cream */
+  color: #1f2937; /* farm-ink */
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, "Segoe UI", Arial, Helvetica, sans-serif;
+  scroll-behavior: smooth;
+}
+
+html, body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Offset anchor supaya tidak tertutup header sticky */
+section[id] {
+  scroll-margin-top: 90px;
+}
+
+/* Font display untuk judul */
+.font-display {
+  font-family: 'Fraunces', Georgia, "Times New Roman", serif;
+  letter-spacing: -0.025em;
+}
+
+/* Gradasi placeholder untuk produk / elemen sistem yang belum ada gambarnya */
+.product-placeholder {
+  background: linear-gradient(110deg, #f8faf8 25%, #eef7ee 45%, #f8faf8 65%, #eef7ee 85%);
 }

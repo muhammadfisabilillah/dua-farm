@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Kita gunakan font Inter dari Google
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "DUA FARM",
-  description: "Pusat peternakan unggas terpercaya DUA FARM",
+  title: "DUA FARM - Peternakan Unggas Terpercaya",
+  description:
+    "Solusi unggas berkualitas dari kandang langsung ke rumah atau UMKM Anda: ayam, joper, dan bibit segar, terstandarisi & higienis.",
 };
 
 export default function RootLayout({
@@ -16,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className={inter.className}>{children}</body>
+      <body className="font-body bg-farm-cream antialiased">{children}</body>
     </html>
   );
 }
